@@ -1,2 +1,6 @@
 @import "tailwindcss" theme(static);
 @import "@nuxt/ui";
+
+:root {
+    --ui-container: 1600px; /* Нове значення */
+  }

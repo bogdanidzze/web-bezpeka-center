@@ -1,3 +1,3 @@
 <template>
-    
+    Company
 </template>

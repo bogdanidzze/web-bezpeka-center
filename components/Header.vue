@@ -60,13 +60,13 @@ const socials = [
 </script>
 
 <template>
-    <header class="border-b border-gray-100 p-4">
-        <UContainer >
-            <div class="flex items-center justify-between">
+    <header class="border-b border-gray-100 py-4">
+        <UContainer>
+            <div class="flex items-center justify-between gap-2">
             
                 <ULink to="/"><Logo class="text-black dark:text-white transition-colors hover:text-gray-500" /></ULink>    
                 <UModal>
-                    <UButton icon="heroicons:device-phone-mobile" size="lg">
+                    <UButton icon="heroicons:device-phone-mobile"  class="hidden lg-block">
                         Залишити заявку
                     </UButton>
                     <template #content>
@@ -74,7 +74,7 @@ const socials = [
                     </template>
                 </UModal>
                 
-                <ul class="flex gap-5 items-center">
+                <ul class="hidden lg:flex gap-5 items-center">
                     <UPopover>
                         <UButton variant="outline" trailing-icon="heroicons:wrench-screwdriver">
                         Послуги
@@ -138,14 +138,76 @@ const socials = [
                     </li>
                 </ul>
 
+
                 <UButton
                 :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
                 color="neutral"
                 variant="ghost"
                 @click="isDark = !isDark"
+                class="hidden lg:block"
                 />
+                
+                <UDrawer direction="right">
+  <UButton color="neutral" variant="ghost" size="xl" icon="i-lucide-menu" class="lg:hidden" />
+
+  <template #content>
+    <div class="w-96 h-full flex flex-col justify-between p-4">
+      
+      <ul class="">
+        <li class="py-2">
+            <UCollapsible class="flex flex-col gap-2 w-48">
+                <UButton
+                size="3xl text-muted"
+                label="Послуги"
+                variant="ghost"
+                trailing-icon="material-symbols:expand-circle-down-outline"
+                class="text-3xl font-normal text-muted gap-1 items-center"
+                />
+
+                <template #content>
+                <ul class="text-3xl w-full">
+                    <li v-for="service in services"><NuxtLink to="service.to">{{ service.name }}</NuxtLink></li>
+                </ul>
+                </template>
+            </UCollapsible></li>
+        <li v-for="link in links" class="text-3xl py-2">
+          <ULink :to="link.to">{{ link.name }}</ULink>
+        </li>
+      </ul>
+
+      
+      <div class="mt-auto flex justify-between">
+        <UModal>
+          <UButton icon="heroicons:device-phone-mobile" size="xl">
+            Залишити заявку
+          </UButton>
+          <template #content>
+            <!-- Вміст модального вікна -->
+          </template>
+        </UModal>
+        <UButton
+                :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+                color="neutral"
+                variant="ghost"
+                @click="isDark = !isDark"
+                size="xl"
+        />
+      </div>
+    </div>
+  </template>
+</UDrawer>
+
 
             </div>
         </UContainer>
     </header>
 </template>
+
+<style>
+
+.text-muted {
+ color: oklch(0.55 0.05 257.42 / 1);
+}
+
+
+</style>
