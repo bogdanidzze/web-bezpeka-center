@@ -79,8 +79,8 @@ const socials = [
                         <UButton variant="outline" trailing-icon="heroicons:wrench-screwdriver">
                         Послуги
                         </UButton>
-                        <template #content>
-                            <div class="w-screen flex justify-between gap-12">
+                        <template #content class="">
+                            <div class="w-screen flex justify-between gap-12 p-5">
                                
                                 <div class="flex flex-col justify-between py-3 gap-3">
                   <div class="header-brands">
@@ -101,7 +101,7 @@ const socials = [
 
                 <div class="w-[75%]">
                         <ul class="grid grid-cols-4 gap-5">
-                              <li v-for="service in services" :key="service.to">
+                              <li v-for="service in services" :key="service.to" >
                                     <NuxtLink :to="service.to" class="block group">
                                           <div class="relative overflow-hidden">
                   
@@ -119,7 +119,7 @@ const socials = [
                         <div class="header-boxs_other flex mt-4 text-white items-center gap-20">
                                     <ul class="grid grid-cols-3 w-full gap-10">
                                           <li v-for="other_service in other_services" :key="other_service.to" >
-                                                <NuxtLink :to="other_service.to" class="bg-black/50 text-white p-3 flex items-center justify-between group">
+                                                <NuxtLink :to="other_service.to" class="bg-black/50 text-white p-3 flex items-center justify-between group hover:bg-black/80">
                                                   <span class="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">{{ other_service.name }}</span>
                                                       <UIcon name="material-symbols:arrow-forward" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-primary group-hover:rotate-45" />
                                                 </NuxtLink>
