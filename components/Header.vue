@@ -1,4 +1,14 @@
 <script setup>
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+const openBurgerMenu = ref(false)
+const route = useRoute()
+
+// Закриваємо UDrawer при зміні маршруту
+watch(() => route.path, () => {
+  openBurgerMenu.value = false
+})
 
     const colorMode = useColorMode()
 
@@ -65,72 +75,72 @@ const socials = [
             <div class="flex items-center justify-between gap-2">
             
                 <ULink to="/"><Logo class="text-black dark:text-white transition-colors hover:text-gray-500" /></ULink>    
-                <UModal>
-                    <UButton icon="heroicons:device-phone-mobile"  class="hidden lg-block">
-                        Залишити заявку
-                    </UButton>
-                    <template #content>
-                        
+                <UModal title="Безкоштовна консультація">
+                    <UButton icon="heroicons:device-phone-mobile" label="Залишити заявку" size="lg" class="hidden lg:flex items-align gap-2" />
+                    <template #body>
+                      <div class="m-auto">
+                              <UForm class="flex flex-col gap-2">
+                                <UFormField label="Ім'я" required>
+                                  <UInput placeholder="Ваше ім'я" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Телефон" required>
+                                  <UInput placeholder="+380 (XX) XXX XX XX" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Послуга" required>
+                                  <USelectMenu :options="services" placeholder="Оберіть" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Опис">
+                                  <UTextarea placeholder="Ваше питання" class="w-full" />
+                                </UFormField>
+                                <UButton block color="primary" size="md" class="mt-3">Відправити</UButton>
+                              </UForm>
+                            </div>      
                     </template>
                 </UModal>
                 
                 <ul class="hidden lg:flex gap-5 items-center">
-                    <UPopover>
-                        <UButton variant="outline" trailing-icon="heroicons:wrench-screwdriver">
-                        Послуги
-                        </UButton>
-                        <template #content class="">
-                            <div class="w-screen flex justify-between gap-12 p-5">
-                               
-                                <div class="flex flex-col justify-between py-3 gap-3">
-                  <div class="header-brands">
-                        <h1 class="text-2xl mb-4">Бренди</h1>
-                        <ul class="grid grid-cols-3 gap-7 items-center">
-                            <li v-for="brand_header in brands_header" :key="brand_header.to">
-                              <NuxtLink :to="brand_header.to"><NuxtImg class="w-28 h-auto" :src="brand_header.src" /></NuxtLink>
-                            </li>
-                        </ul>
-                  </div>
-                  <div class="header-soc">
-                        <h1 class="text-2xl mb-4">Ми в соціальних мережах</h1>
-                        <ul class="flex items-center gap-5">
-                              <li v-for="social in socials" :key="social.to"><a :href="social.to" target="_blank"><UIcon  :name="social.icon" class="w-8 h-8 transition-color hover:text-primary"/></a></li>
-                        </ul>
-                  </div>
-                </div>  
+                  <UPopover :popper="{ placement: 'bottom-start', strategy: 'fixed' }">
+                    <UButton variant="outline" trailing-icon="heroicons:wrench-screwdriver">
+                      Послуги
+                    </UButton>
+  
+                <template #content>
+                  <div class="w-screen max-w-full bg-white/10 dark:bg-gray-500/50 backdrop-blur-md rounded-lg p-5">
+                    <div class="flex flex-wrap gap-12 justify-center">
 
-                <div class="w-[75%]">
-                        <ul class="grid grid-cols-4 gap-5">
-                              <li v-for="service in services" :key="service.to" >
-                                    <NuxtLink :to="service.to" class="block group">
-                                          <div class="relative overflow-hidden">
-                  
-                                                <NuxtImg :src="service.img_src" :alt="service.img_alt" class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"/>
-                                                
-                                                <div class="absolute bottom-0 left-0 w-full bg-black/50 text-white p-3 flex items-center justify-between transition-all duration-300 ease-in-out group-hover:bg-black/80">
-                                                      <span class="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">{{ service.name }}</span>
-                                                      <UIcon name="material-symbols:arrow-forward" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-primary group-hover:rotate-45" />
-                                                </div>
-                                          </div>
-                                    </NuxtLink>
-
-                              </li>
+                      <div class="w-full md:w-3/4">
+                        <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <li v-for="service in services" :key="service.to">
+                            <NuxtLink :to="service.to" class="block group">
+                              <div class="relative overflow-hidden rounded-lg shadow-md">
+                                <NuxtImg :src="service.img_src" :alt="service.img_alt" class="w-full h-50 object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"/>
+                                <div class="absolute bottom-0 left-0 w-full bg-black/50 text-white p-3 flex items-center justify-between transition-all duration-300 ease-in-out group-hover:bg-black/80">
+                                  <span class="text-sm font-semibold transition-colors group-hover:text-primary">{{ service.name }}</span>
+                                  <UIcon name="material-symbols:arrow-forward" class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:text-primary group-hover:rotate-45" />
+                                </div>
+                              </div>
+                            </NuxtLink>
+                          </li>
                         </ul>
-                        <div class="header-boxs_other flex mt-4 text-white items-center gap-20">
-                                    <ul class="grid grid-cols-3 w-full gap-10">
-                                          <li v-for="other_service in other_services" :key="other_service.to" >
-                                                <NuxtLink :to="other_service.to" class="bg-black/50 text-white p-3 flex items-center justify-between group hover:bg-black/80">
-                                                  <span class="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">{{ other_service.name }}</span>
-                                                      <UIcon name="material-symbols:arrow-forward" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-primary group-hover:rotate-45" />
-                                                </NuxtLink>
-                                          </li>
-                                    </ul>
-                        </div>
-                  </div>
 
-                            </div>
-                        </template>
-                    </UPopover>
+          
+                      <div class="header-boxs_other flex mt-5 text-white items-center gap-4">
+                        <ul class="grid grid-cols-2 md:grid-cols-3 w-full gap-4">
+                          <li v-for="other_service in other_services" :key="other_service.to">
+                            <NuxtLink :to="other_service.to" class="group bg-black/50 text-white p-3 flex items-center justify-between rounded-lg transition-all hover:bg-black/80">
+                              <span class="text-sm font-semibold transition-colors group-hover:text-primary">{{ other_service.name }}</span>
+                              <UIcon name="material-symbols:arrow-forward" class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:text-primary group-hover:rotate-45" />
+                            </NuxtLink>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+        
+                  </div>
+                </div>
+              </template>
+            </UPopover>
+
                     <li v-for="link in links">
                         <NuxtLink :to="link.to" class="relative inline-block after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-current after:transition-all after:duration-300 hover:after:w-full">
                             {{ link.name }}
@@ -147,55 +157,82 @@ const socials = [
                 class="hidden lg:block"
                 />
                 
-                <UDrawer direction="right">
-  <UButton color="neutral" variant="ghost" size="xl" icon="i-lucide-menu" class="lg:hidden" />
+                <UDrawer direction="right" v-model:open="openBurgerMenu">
+                  <UButton color="neutral" variant="ghost" size="xl" icon="i-lucide-menu" class="lg:hidden" />
 
-  <template #content>
-    <div class="w-96 h-full flex flex-col justify-between p-4">
-      
-      <ul class="">
-        <li class="py-2">
-            <UCollapsible class="flex flex-col gap-2 w-48">
-                <UButton
-                size="3xl text-muted"
-                label="Послуги"
-                variant="ghost"
-                trailing-icon="material-symbols:expand-circle-down-outline"
-                class="text-3xl font-normal text-muted gap-1 items-center"
-                />
+                  <template #content>
+                    <div class="w-96 h-full flex flex-col gap-5 justify-between p-4 overflow-y-auto">
+                      
+                      <ul>
+                        <li class="py-2">
+                            <UCollapsible class="flex flex-col w-full gap-2">
+                                <UButton
+                                size="3xl"
+                                label="Послуги"
+                                variant="ghost"
+                                trailing-icon="i-lucide-chevron-down"
+                                class="group text-3xl font-normal text-muted gap-1 items-center"
+                                :ui="{
+                                  trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
+                                }"
+                                />
 
-                <template #content>
-                <ul class="text-3xl w-full">
-                    <li v-for="service in services"><NuxtLink to="service.to">{{ service.name }}</NuxtLink></li>
-                </ul>
-                </template>
-            </UCollapsible></li>
-        <li v-for="link in links" class="text-3xl py-2">
-          <ULink :to="link.to">{{ link.name }}</ULink>
-        </li>
-      </ul>
+                                <template #content class="w-full">
+                                  <ul class="text-2xl w-full">
+                                      <li v-for="service in services" class="py-1"><NuxtLink to="service.to">{{ service.name }}</NuxtLink></li>
+                                  </ul>
+                                </template>
+                            </UCollapsible>
+                        </li>
+                        
+                        <li v-for="link in links" class="text-3xl flex flex-col w-full py-2">
+                          <ULink :to="link.to">{{ link.name }}</ULink>
+                        </li>
+                      </ul>
 
-      
-      <div class="mt-auto flex justify-between">
-        <UModal>
-          <UButton icon="heroicons:device-phone-mobile" size="xl">
-            Залишити заявку
-          </UButton>
-          <template #content>
-            <!-- Вміст модального вікна -->
-          </template>
-        </UModal>
-        <UButton
-                :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
-                color="neutral"
-                variant="ghost"
-                @click="isDark = !isDark"
-                size="xl"
-        />
-      </div>
-    </div>
-  </template>
-</UDrawer>
+
+                    <div class="mt-auto flex flex-col gap-4">  
+                      <ul class="flex items-center gap-6">
+                        <li v-for="social in socials"><a :href="social.to" target="_blank"><UIcon  :name="social.icon" class="w-8 h-8 transition-color hover:text-primary"/></a></li>
+                      </ul>
+                      
+                      <div class="flex justify-between">
+                        <UModal title="Безкоштовна консультація">
+                          <UButton icon="heroicons:device-phone-mobile" size="xl">
+                            Залишити заявку
+                          </UButton>
+                          <template #body>
+                            <div class="m-auto">
+                              <UForm class="flex flex-col gap-2">
+                                <UFormField label="Ім'я" required>
+                                  <UInput placeholder="Ваше ім'я" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Телефон" required>
+                                  <UInput placeholder="+380 (XX) XXX XX XX" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Послуга" required>
+                                  <USelectMenu :options="services" placeholder="Оберіть" class="w-full" />
+                                </UFormField>
+                                <UFormField label="Опис">
+                                  <UTextarea placeholder="Ваше питання" class="w-full" />
+                                </UFormField>
+                                <UButton block color="primary" size="md" class="mt-3">Відправити</UButton>
+                              </UForm>
+                            </div>
+                          </template>
+                        </UModal>
+                        <UButton
+                                :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+                                color="neutral"
+                                variant="ghost"
+                                @click="isDark = !isDark"
+                                size="xl"
+                        />
+                      </div>
+                    </div>
+                    </div>
+                  </template>
+                </UDrawer>
 
 
             </div>
